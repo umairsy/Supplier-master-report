@@ -1,0 +1,27 @@
+SELECT
+  `tabSupplier`.name as "Supplier:Link/Supplier:120",
+	`tabSupplier`.supplier_name,
+	`tabSupplier`.supplier_type,
+	concat_ws(', ', 
+		trim(',' from `tabAddress`.address_line1), 
+		trim(',' from tabAddress.address_line2), 
+		tabAddress.state, tabAddress.pincode, tabAddress.country
+	) as 'address',
+	`tabContact`.first_name,
+	`tabContact`.last_name,
+	`tabContact`.phone,
+	`tabContact`.mobile_no,
+	`tabContact`.email_id,
+	`tabContact`.is_primary_contact
+FROM
+	`tabSupplier`
+	left join `tabAddress` on (
+		`tabAddress`.supplier=`tabSupplier`.name
+	)
+	left join `tabContact` on (
+		`tabContact`.supplier=`tabSupplier`.name
+	)
+WHERE
+	`tabSupplier`.docstatus<2
+ORDER BY
+	`tabSupplier`.name asc
